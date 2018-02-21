@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+  before_action :set_article, only: [:show, :edit, :update, :destroy]
   def index
     @articles = Article.all
   end
@@ -16,23 +17,31 @@ class ArticlesController < ApplicationController
       render 'new'
     end
   end
-
+  # GET /rubros/1
   def show
-    @article = Article.find(params[:id])
   end
-
+  # GET /rubros/1/edit
   def edit
-    @article = Article.find(params[:id])
   end
-
+  # PATCH/PUT /articles/1
   def update
-    @article = Article.find(params[:id])
-
     if @article.update(article_params)
       redirect_to @article
     else
       render 'edit'
     end
+
+=begin
+    @article = Article.find(params[:id])
+
+    if @article.update(article_params)
+
+
+      redirect_to @article
+    else
+      render 'edit'
+    end
+=end
   end
 
   def destroy
@@ -42,9 +51,12 @@ class ArticlesController < ApplicationController
   end
 
   private
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_article
+      @article = Article.find(params[:id])
+    end
     def article_params
       params.require(:article).permit(:title, :text)
     end
-
-
 end
